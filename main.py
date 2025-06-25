@@ -7,7 +7,6 @@ MESSAGES = ["Magic!", "Genius!", "Amazing!", "Great!", "Solid!", "Phew!"]
 def main():
     print("Welcome to Wordle!")
     game = WordleGame()
-    guesses = 0
     while game.playing:
         guess = input()
         try:
@@ -15,17 +14,15 @@ def main():
             print(
                 "\x1b[A\r"
                 + "".join(COLORS[m] + l for m, l in zip(mark, guess))
+                + f"  {game.guesses}/{game.max_guesses}"
                 + "\x1b[0m"
             )
-            guesses += 1
-            if mark == (2, 2, 2, 2, 2):
-                print(MESSAGES[guesses - 1])
-                break
-            elif guesses == 6:
-                print("Better luck next time. The word was", game.answer)
-                break
         except WordleGuessError:
             print("\x1b[A\r      (invalid)\r\x1b[A")
+    if game.completed:
+        print(MESSAGES[game.guesses -1])
+    else:
+        print("Better luck next time. The word was", game.answer)
 
 
 main()

@@ -1,9 +1,7 @@
 import random
 
-
 class WordleGuessError(Exception):
     pass
-
 
 class WordleGame:
     def __init__(self, answer=None, max_guesses=6) -> None:
@@ -18,8 +16,10 @@ class WordleGame:
         self.playing = True
         self.guesses = 0
         self.max_guesses = max_guesses
+        self.completed = False
 
     def guess(self, guess: str) -> tuple[int]:
+        self.guesses += 1
         if guess not in self.valid_guesses:
             raise WordleGuessError(f"Guess '{guess}' not in word list")
         mark = [0, 0, 0, 0, 0]
@@ -30,5 +30,8 @@ class WordleGame:
                 mark[i] = 1
         mark = tuple(mark)
         if mark == (2, 2, 2, 2, 2):
+            self.playing = False
+            self.completed = True
+        elif self.guesses == 6:
             self.playing = False
         return mark
