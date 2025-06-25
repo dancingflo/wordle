@@ -32,6 +32,6 @@ class WordleGame:
         if mark == (2, 2, 2, 2, 2):
             self.playing = False
             self.completed = True
-        elif self.guesses == 6:
+        elif self.guesses >= self.max_guesses:
             self.playing = False
         return mark
