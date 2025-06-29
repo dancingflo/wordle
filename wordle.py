@@ -19,9 +19,9 @@ class WordleGame:
         self.completed = False
 
     def guess(self, guess: str) -> tuple[int]:
-        self.guesses += 1
         if guess not in self.valid_guesses:
             raise WordleGuessError(f"Guess '{guess}' not in word list")
+        self.guesses += 1
         mark = [0, 0, 0, 0, 0]
         for i, letter in enumerate(guess):
             if letter == self.answer[i]:
