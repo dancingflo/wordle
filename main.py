@@ -12,7 +12,9 @@ class WordleUI:
         self.game = WordleGame()
         self.guesses = []
     
+    
     def run(self) -> None:
+        print(self.game.answer)
         size = shutil.get_terminal_size()
         if size.lines < self.game.max_guesses + 6 or size.columns < 11:
             print("Terminal smaller than (12, 11)")
@@ -23,13 +25,13 @@ class WordleUI:
         while self.game.playing:
             char = getch()
             # self.message = str(char)
-            if char == b"\x03":
+            if char == b"\x03": #ctrl
                 print("\x1b[11B", end="")
                 sys.exit(1)
-            if char == b"\x08":
+            if char == b"\x08": #delete
                 if self.buffer:
                     self.buffer = self.buffer[:-1]
-            elif char == b"\r":
+            elif char == b"\r": #enter
                 self.guess()
             elif char in self.LETTERS:
                 if len(self.buffer) < 5:
@@ -53,7 +55,7 @@ class WordleUI:
         if self.game.completed:
             self.message = self.MESSAGES[self.game.guesses - 1]
         else:
-            self.message = self.COLORS[2] + self.game.answer.center(11) + "\x1b[0m"
+            self.message = self.COLORS[2] + self.game.answer + "\x1b[0m"
         self.refresh()
         print("\x1b[11B", end="")
         
@@ -75,10 +77,10 @@ class WordleUI:
 |           |
 {'\n'.join(lines)}
 |           |
-|{self.message.center(11) if self.game.playing else self.message}|
+|{self.message.center(11)}|
 +===========+\x1b[{6+len(lines)}A""")
         print("\x1b[?25l", end="")
-
+#if self.game.playing else self.message
 def main():
     WordleUI().run()
 
