@@ -21,13 +21,17 @@ class WordleGame:
     def guess(self, guess: str) -> tuple[int]:
         if guess not in self.valid_guesses:
             raise WordleGuessError(f"Guess '{guess}' not in word list")
+        guess_letters = ""
         self.guesses += 1
         mark = [0, 0, 0, 0, 0]
         for i, letter in enumerate(guess):
             if letter == self.answer[i]:
+                guess_letters += letter
                 mark[i] = 2
             elif letter in self.answer:
-                mark[i] = 1
+                if self.answer.count(letter)> guess_letters.count(letter):
+                    mark[i] = 1
+                    guess_letters += letter
         mark = tuple(mark)
         if mark == (2, 2, 2, 2, 2):
             self.playing = False
