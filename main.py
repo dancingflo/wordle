@@ -12,7 +12,7 @@ class WordleUI:
 
     def __init__(self) -> None:
         self.game = WordleGame()
-        self.guesses = []
+        self.guesses = [str]
 
     def run(self) -> None:
         # print(self.game.answer)

@@ -1,10 +1,15 @@
 import random
+import typing
+
 
 class WordleGuessError(Exception):
     pass
 
+
 class WordleGame:
-    def __init__(self, answer=None, max_guesses=6) -> None:
+    def __init__(
+        self, answer: typing.Union[None, str] = None, max_guesses: int = 6
+    ) -> None:
         with open("data/guesses.txt") as f:
             self.valid_guesses = set(f.read().splitlines())
         if answer is None:
@@ -18,7 +23,7 @@ class WordleGame:
         self.max_guesses = max_guesses
         self.completed = False
 
-    def guess(self, guess: str) -> tuple[int]:
+    def guess(self, guess: str) -> tuple[int, int, int, int, int]:
         if guess not in self.valid_guesses:
             raise WordleGuessError(f"Guess '{guess}' not in word list")
         guess_letters = ""
@@ -29,10 +34,10 @@ class WordleGame:
                 guess_letters += letter
                 mark[i] = 2
             elif letter in self.answer:
-                if self.answer.count(letter)> guess_letters.count(letter):
+                if self.answer.count(letter) > guess_letters.count(letter):
                     mark[i] = 1
                     guess_letters += letter
-        mark = tuple(mark)
+        mark: tuple[int, int, int, int, int] = tuple(mark)
         if mark == (2, 2, 2, 2, 2):
             self.playing = False
             self.completed = True
